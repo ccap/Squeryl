@@ -89,17 +89,17 @@ trait QueryYield[R] {
   }
 
   def on(lb1: =>LogicalBoolean, lb2: =>LogicalBoolean, lb3: =>LogicalBoolean, lb4: =>LogicalBoolean, lb5: =>LogicalBoolean, lb6: =>LogicalBoolean, lb7: =>LogicalBoolean, lb8: =>LogicalBoolean, lb9: =>LogicalBoolean, lb10: =>LogicalBoolean, lb11: => LogicalBoolean) = {
-    joinExpressions = Seq(lb1 _, lb2 _, lb3 _, lb4 _, lb5 _, lb6 _, lb7 _, lb8 _, lb9 _, lb11 _)
+    joinExpressions = Seq(lb1 _, lb2 _, lb3 _, lb4 _, lb5 _, lb6 _, lb7 _, lb8 _, lb9 _, lb10 _, lb11 _)
     new JoinQueryYield11(this)
   }
 
   def on(lb1: =>LogicalBoolean, lb2: =>LogicalBoolean, lb3: =>LogicalBoolean, lb4: =>LogicalBoolean, lb5: =>LogicalBoolean, lb6: =>LogicalBoolean, lb7: =>LogicalBoolean, lb8: =>LogicalBoolean, lb9: =>LogicalBoolean, lb10: =>LogicalBoolean, lb11: =>LogicalBoolean, lb12: =>LogicalBoolean) = {
-    joinExpressions = Seq(lb1 _, lb2 _, lb3 _, lb4 _, lb5 _, lb6 _, lb7 _, lb8 _, lb9 _, lb11 _, lb12 _)
+    joinExpressions = Seq(lb1 _, lb2 _, lb3 _, lb4 _, lb5 _, lb6 _, lb7 _, lb8 _, lb9 _, lb10 _, lb11 _, lb12 _)
     new JoinQueryYield12(this)
   }
 
   def on(lb1: =>LogicalBoolean, lb2: =>LogicalBoolean, lb3: =>LogicalBoolean, lb4: =>LogicalBoolean, lb5: =>LogicalBoolean, lb6: =>LogicalBoolean, lb7: =>LogicalBoolean, lb8: =>LogicalBoolean, lb9: =>LogicalBoolean, lb10: =>LogicalBoolean, lb11: =>LogicalBoolean, lb12: =>LogicalBoolean, lb13: =>LogicalBoolean) = {
-    joinExpressions = Seq(lb1 _, lb2 _, lb3 _, lb4 _, lb5 _, lb6 _, lb7 _, lb8 _, lb9 _, lb11 _, lb12 _, lb13 _)
+    joinExpressions = Seq(lb1 _, lb2 _, lb3 _, lb4 _, lb5 _, lb6 _, lb7 _, lb8 _, lb9 _, lb10 _, lb11 _, lb12 _, lb13 _)
     new JoinQueryYield13(this)
   }
 }

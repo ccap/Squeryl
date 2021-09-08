@@ -3,9 +3,9 @@ import Keys._
 //import ls.Plugin._
 
 object Resolvers {
-  val ccapRepo = "CCAP Repository" at "http://repoman.wicourts.gov/artifactory/scala"
-  val ccapReleases = "CCAP Releases" at "http://repoman.wicourts.gov/artifactory/libs-release-local"
-  val ccapSnapshots = "CCAP Snapshots" at "http://repoman.wicourts.gov/artifactory/libs-snapshot-local"
+  val ccapRepo = "CCAP Repository" at "https://repoman.wicourts.gov/artifactory/scala"
+  val ccapReleases = "CCAP Releases" at "https://repoman.wicourts.gov/artifactory/libs-release-local"
+  val ccapSnapshots = "CCAP Snapshots" at "https://repoman.wicourts.gov/artifactory/libs-snapshot-local"
 }
 
 object SquerylBuild extends Build {
@@ -16,7 +16,7 @@ object SquerylBuild extends Build {
     settings = Project.defaultSettings /* ++ lsSettings */ ++ Seq(
       description := "A Scala ORM and DSL for talking with Databases using minimum verbosity and maximum type safety",
       organization := "gov.wicourts.org.squeryl",
-      version := "0.9.6-ccap38",
+      version := "0.9.6-ccap39",
       javacOptions := Seq("-source", "1.6", "-target", "1.6"),
       /*
   	  version <<= version { v => //only release *if* -Drelease=true is passed to JVM
