@@ -499,17 +499,21 @@ abstract class SchoolDb2Tests extends SchemaTester with RunTestsInsideTransactio
     val cs = from(courseSubscriptions)(p => compute(avg(p.grade)))
    
     val belowOrEqualToAvg = 
-      from(courseSubscriptions)(p =>
-        where(p.grade lte from(courseSubscriptions)(p => compute(avg(p.grade))))
+      from(courseSubscriptions)(p => {
+        val z0: Option[Float] = from(courseSubscriptions)(p => compute(avg(p.grade)))
+        where(p.grade lte z0)
         select(p)
+      }
       ).toList
       
     assert(belowOrEqualToAvg.size == 1)
     
     val belowAvg = 
-      from(courseSubscriptions)(p =>
-        where(p.grade lt from(courseSubscriptions)(p => compute(avg(p.grade))))
-        select(p)
+      from(courseSubscriptions)(p => {
+          val z0: Option[Float] = from(courseSubscriptions)(p => compute(avg(p.grade)))
+          where(p.grade lt z0)
+          select(p)
+      }
       ).toList
       
     assert(belowAvg.size == 0)    

@@ -205,6 +205,51 @@ trait JoinSignatures {
       (a:A,b1:B1,b2:B2,b3:B3,b4:B4,b5:B5,b6:B6,b7:B7,b8:B8,b9:B9,b10:B10,b11:B11,b12:B12,b13:B13) =>
         f(a,b1,b2,b3,b4,b5,b6,b7,b8,b9,b10,b11,b12,b13).queryYield
     )
+
+    def join[A,B1,B2,B3,B4,B5,B6,B7,B8,B9,B10,B11,B12,B13,B14,C](
+          q: Queryable[A],
+          q1: JoinedQueryable[B1],
+          q2: JoinedQueryable[B2],
+          q3: JoinedQueryable[B3],
+          q4: JoinedQueryable[B4],
+          q5: JoinedQueryable[B5],
+          q6: JoinedQueryable[B6],
+          q7: JoinedQueryable[B7],
+          q8: JoinedQueryable[B8],
+          q9: JoinedQueryable[B9],
+          q10: JoinedQueryable[B10],
+          q11: JoinedQueryable[B11],
+          q12: JoinedQueryable[B12],
+          q13: JoinedQueryable[B13],
+          q14: JoinedQueryable[B14],
+          )(f: Function15[A,B1,B2,B3,B4,B5,B6,B7,B8,B9,B10,B11,B12,B13,B14,JoinQueryYield14[C]]): Query[C] =
+    from(q,q1,q2,q3,q4,q5,q6,q7,q8,q9,q10,q11,q12,q13,q14)(
+      (a:A,b1:B1,b2:B2,b3:B3,b4:B4,b5:B5,b6:B6,b7:B7,b8:B8,b9:B9,b10:B10,b11:B11,b12:B12,b13:B13,b14:B14) =>
+        f(a,b1,b2,b3,b4,b5,b6,b7,b8,b9,b10,b11,b12,b13,b14).queryYield
+    )
+
+    def join[A,B1,B2,B3,B4,B5,B6,B7,B8,B9,B10,B11,B12,B13,B14,B15,C](
+      q: Queryable[A],
+      q1: JoinedQueryable[B1],
+      q2: JoinedQueryable[B2],
+      q3: JoinedQueryable[B3],
+      q4: JoinedQueryable[B4],
+      q5: JoinedQueryable[B5],
+      q6: JoinedQueryable[B6],
+      q7: JoinedQueryable[B7],
+      q8: JoinedQueryable[B8],
+      q9: JoinedQueryable[B9],
+      q10: JoinedQueryable[B10],
+      q11: JoinedQueryable[B11],
+      q12: JoinedQueryable[B12],
+      q13: JoinedQueryable[B13],
+      q14: JoinedQueryable[B14],
+      q15: JoinedQueryable[B15],
+      )(f: Function16[A,B1,B2,B3,B4,B5,B6,B7,B8,B9,B10,B11,B12,B13,B14,B15,JoinQueryYield15[C]]): Query[C] =
+    from(q,q1,q2,q3,q4,q5,q6,q7,q8,q9,q10,q11,q12,q13,q14,q15)(
+      (a:A,b1:B1,b2:B2,b3:B3,b4:B4,b5:B5,b6:B6,b7:B7,b8:B8,b9:B9,b10:B10,b11:B11,b12:B12,b13:B13,b14:B14,b15:B15) =>
+        f(a,b1,b2,b3,b4,b5,b6,b7,b8,b9,b10,b11,b12,b13,b14,b15).queryYield
+    )
 }
 
 
@@ -221,3 +266,5 @@ class JoinQueryYield10[R](val queryYield: QueryYield[R])
 class JoinQueryYield11[R](val queryYield: QueryYield[R])
 class JoinQueryYield12[R](val queryYield: QueryYield[R])
 class JoinQueryYield13[R](val queryYield: QueryYield[R])
+class JoinQueryYield14[R](val queryYield: QueryYield[R])
+class JoinQueryYield15[R](val queryYield: QueryYield[R])

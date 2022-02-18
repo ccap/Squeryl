@@ -860,7 +860,7 @@ abstract class MusicDbTestRun extends SchemaTester with QueryTester with RunTest
   test("Enums IN"){
     val testInstance = sharedTestInstance; import testInstance._
 
-    val gs = List(Jazz, Rock)
+    val gs: List[Enumeration#Value] = List(Jazz, Rock)
     val mainstream = from(songs)(s =>
       where(s.genre in (gs))
       select(s)
@@ -905,13 +905,13 @@ abstract class MusicDbTestRun extends SchemaTester with QueryTester with RunTest
   
   test("Enums"){
     val testInstance = sharedTestInstance; import testInstance._
-    val testAssemblaIssue9 =
+    val testAssemblaIssue9: Query[Genre] = {
+      val z0: Query[Enumeration#Value] = from(songs)(s2 => select(s2.genre))
       from(songs)(s =>
-        where(s.genre in (
-           from(songs)(s2 => select(s2.genre))
-        ))
+        where(s.genre in z0)
         select(s.genre)
       )
+    }
 
     testAssemblaIssue9.map(_.id).toSet
 
@@ -1037,7 +1037,7 @@ abstract class MusicDbTestRun extends SchemaTester with QueryTester with RunTest
 
   test("AggregateQueryOnRightHandSideOfInOperator"){
     val testInstance = sharedTestInstance; import testInstance._
-    val q1 =
+    val q1: Option[Int] =
       from(cds)(cd =>
         compute(min(cd.id))
       )
@@ -1046,22 +1046,27 @@ abstract class MusicDbTestRun extends SchemaTester with QueryTester with RunTest
 
     assertEquals(congaBlue.id, r1.id, 'testAggregateQueryOnRightHandSideOfInOperator)
 
-    val q2 =
+    val q2: Option[String] =
       from(cds)(cd =>
         compute(min(cd.title))
       )
 
-    val r2 = cds.where(_.title in q2).single
+       val r2 = cds.where(_.title in q2).single
 //    println(q2.statement)
 //    println(cds.toList)
 //    println(cds.where(_.title in q2).statement)
     assertEquals(congaBlue.title, r2.title, 'testAggregateQueryOnRightHandSideOfInOperator)
 
     // should compile (valid SQL even though phony...) :
-    artists.where(_.age in from(artists)(a=> compute(count)))
+    // JPO 2/22: added type signature and option since it was not compiling
+    // most problems were resolved with just a type signature but
+    // the compiler did not like to combine `in` with `Long`
+    val z1: Option[Long] = Some(from(artists)(a => compute(count)))
+    artists.where(_.age in z1)
 
     // should compile, since SQL allows comparing nullable cols against non nullable ones :
-    artists.where(_.id in from(artists)(a=> compute(max(a.age))))
+    val z0: Option[Int] = from(artists)(a => compute(max(a.age)))
+    artists.where(_.id in z0)
 
     //shouldn't compile :
     //artists.where(_.age in from(artists)(a=> compute(max(a.name))))
