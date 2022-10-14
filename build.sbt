@@ -8,7 +8,7 @@ lazy val squeryl = Project("squeryl", file(".")).settings(
   Seq(
     description := "A Scala ORM and DSL for talking with Databases using minimum verbosity and maximum type safety",
     organization := "gov.wicourts.org.squeryl",
-    version := "0.9.6-ccap40",
+    version := "0.9.6-ccap41",
     javacOptions := Seq("-source", "1.8", "-target", "1.8"),
     /*
   	version <<= version { v => //only release *if* -Drelease=true is passed to JVM
@@ -75,7 +75,6 @@ lazy val squeryl = Project("squeryl", file(".")).settings(
       "org.scalatest" %% "scalatest" % "3.0.3" % "test",
       "org.scala-lang" % "scala-reflect" % "2.12.2",
       "org.scala-lang.modules" %% "scala-xml" % "1.0.5",
-      "org.scalaz" %% "scalaz-core" % "7.2.18"
     )
   )
 )

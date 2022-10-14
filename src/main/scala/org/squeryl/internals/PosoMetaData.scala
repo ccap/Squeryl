@@ -379,8 +379,10 @@ class PosoMetaData[T: universe.TypeTag](val clasz: Class[T], val schema: Schema,
     else
       unpackTypeFromTag(tpe)
 
-  private def unpackTypeFromTag(tpe: universe.Type): Option[universe.Type] =
-    if (tpe.erasure =:= universe.typeOf[Object]) {
+  private def unpackTypeFromTag(tpe: universe.Type): Option[universe.Type] = {
+    if (tpe.typeSymbol.fullName == "gov.wicourts.common.TagModule.$at$at")
+      tpe.dealias.typeArgs.headOption
+    else if (tpe.erasure =:= universe.typeOf[Object]) {
       val dealiased = tpe.dealias
       if (dealiased.decls.toList.length == 2 &&
         dealiased.decl(universe.TypeName("Tag")) != universe.NoSymbol)
@@ -391,6 +393,7 @@ class PosoMetaData[T: universe.TypeTag](val clasz: Class[T], val schema: Schema,
         None
     } else
       None
+  }
 
   private def runtimeClass(tpe: universe.Type): Option[Class[_]] = {
     val mirror = universe.runtimeMirror(getClass.getClassLoader)
