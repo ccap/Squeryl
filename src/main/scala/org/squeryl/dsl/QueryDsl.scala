@@ -15,7 +15,6 @@
  ***************************************************************************** */
 package org.squeryl.dsl
 
-import scalaz.@@
 import ast._
 import boilerplate._
 import fsm._
@@ -204,8 +203,6 @@ trait QueryDsl
   implicit val booleanComparisonEvidence   = new CanCompare[TOptionBoolean, TOptionBoolean]
   implicit val uuidComparisonEvidence      = new CanCompare[TOptionUUID, TOptionUUID]
   implicit def enumComparisonEvidence[A]   = new CanCompare[TEnumValue[A],TEnumValue[A]]
-  implicit def taggedComparisonEvidence[T, Q]: CanCompare[T @@ Q, T @@ Q] = new CanCompare[T @@ Q, T @@ Q]
-  implicit def taggedComparisonEvidence2[T1, T2 <: T1, Q]: CanCompare[T1 @@ Q, T2 @@ Q] = new CanCompare[T1 @@ Q, T2 @@ Q] // To allow TOptionString @ Q and TString @ Q to be equal
 
   implicit def concatenationConversion[A1,A2,T1,T2](co: ConcatOp[A1,A2,T1,T2]): TypedExpression[String,TString] = 
     new ConcatOperationNode[String,TString](co.a1, co.a2, InternalFieldMapper.stringTEF.createOutMapper)
