@@ -335,7 +335,7 @@ class Table[T: TypeTag] private [squeryl] (n: String, c: Class[T], val schema: S
 
     val vxn = new ViewExpressionNode(this)
     vxn.sample =
-       posoMetaData.createSample(FieldReferenceLinker.createCallBack(vxn))
+       posoMetaData.createSample(vxn)
     val us = s(vxn.sample)
     vxn.parent = Some(us)
 

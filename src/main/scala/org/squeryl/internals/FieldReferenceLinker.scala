@@ -15,7 +15,6 @@
  ***************************************************************************** */
 package org.squeryl.internals
 
-import net.sf.cglib.proxy._
 import collection.mutable.{HashSet, ArrayBuffer}
 import org.squeryl.dsl.ast._
 import org.squeryl.dsl.CompositeKey
@@ -269,14 +268,14 @@ object FieldReferenceLinker {
 			  val clazzName = clazz.getName
 			  //println("Looking at " + clazzName)
 			  if(!clazzName.startsWith("java.") && 
-					  !clazzName.startsWith("net.sf.cglib.") && 
 					  !clazzName.startsWith("scala.Enumeration")) {
 				  visited.put(o,o)
 				  _populateSelectCols(yi, q, o)
 				  for(f <- _declaredFieldCache(clazz)) {
 					  f.setAccessible(true);
 					  val ob = f.get(o)
-					  if(!f.getName.startsWith("CGLIB$") && 
+                                          if(f.getName.indexOf("$ByteBuddy$") == -1 &&
+					        !f.getName.startsWith(PosoMetaData.InternalFieldPrefix) &&
 					        !f.getType.getName.startsWith("scala.Function") && 
 					        !FieldMetaData.factory.hideFromYieldInspection(o, f)) {
 						  _populateSelectColsRecurse(visited, yi, q, ob)
@@ -307,17 +306,16 @@ object FieldReferenceLinker {
     q.filterDescendantsOfType[QueryableExpressionNode].find(_.owns(sample))
   }
 
-  def createCallBack(v: ViewExpressionNode[_]): Callback =
-    new PosoPropertyAccessInterceptor(v)
-  
-  private class PosoPropertyAccessInterceptor(val viewExpressionNode: ViewExpressionNode[_]) extends MethodInterceptor {
+  object PosoPropertyAccessInterceptor {
+      def fmd4Method(viewExpressionNode: ViewExpressionNode[_], m: Method) =
+        Option(viewExpressionNode).flatMap(_.view.findFieldMetaDataForProperty(m.getName))
 
-      def fmd4Method(m: Method) =
-        viewExpressionNode.view.findFieldMetaDataForProperty(m.getName)
+      def intercept(o: Object, m: Method, args: Array[Object], superMethod: Method): Object = {
+        val viewExpressionNodeField = o.getClass().getDeclaredField(PosoMetaData.ViewExpressionNodeFieldName)
 
-      def intercept(o: Object, m: Method, args: Array[Object], proxy: MethodProxy): Object = {
+        val viewExpressionNode = viewExpressionNodeField.get(o).asInstanceOf[ViewExpressionNode[_]]
 
-        val fmd = fmd4Method(m)
+        val fmd = fmd4Method(viewExpressionNode, m)
         val yi = if (isYieldInspectionMode) _yieldInspectionTL.get else null
         val isComposite =
           classOf[CompositeKey].isAssignableFrom(m.getReturnType)
@@ -326,24 +324,27 @@ object FieldReferenceLinker {
           if(fmd != None && yi != null)
             yi.incrementReentranceDepth
 
-          _intercept(o, m, args, proxy, fmd, yi, isComposite)
+          _intercept(viewExpressionNode, o, m, args, superMethod, fmd, yi, isComposite)
         }
         finally {
           if(fmd != None && yi != null)
             yi.decrementReentranceDepth
         }
+
+
       }
 
-      private def _intercept(o: Object, m: Method, args: Array[Object], proxy: MethodProxy, fmd: Option[FieldMetaData], yi: YieldInspection, isComposite: Boolean): Object = {
+      private def _intercept(viewExpressionNode: ViewExpressionNode[_], o: Object, m: Method, args: Array[Object], superMethod: Method, fmd: Option[FieldMetaData], yi: YieldInspection, isComposite: Boolean): Object = {
 
         if(isComposite)
           _compositeKeyMembers.set(Some(new ArrayBuffer[SelectElement]))
 
         val res =
-          if(m.getName.equals("toString") && m.getParameterTypes.length == 0)
+          if(m.getName.equals("toString") && m.getParameterTypes.length == 0 && (viewExpressionNode ne null))
             "sample:"+viewExpressionNode.view.name+"["+Integer.toHexString(System.identityHashCode(o)) + "]"
-          else
-            proxy.invokeSuper(o, args);
+          else {
+            superMethod.invoke(o, args: _*);
+          }
 
         if(isComposite) {
           val ck = res.asInstanceOf[CompositeKey]
@@ -366,5 +367,7 @@ object FieldReferenceLinker {
 
         res
       }
+
   }
+
 }

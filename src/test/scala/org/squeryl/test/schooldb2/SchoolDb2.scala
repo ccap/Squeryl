@@ -497,12 +497,15 @@ abstract class SchoolDb2Tests extends SchemaTester with RunTestsInsideTransactio
     assertEquals(95.0F, cs2.grade, 'testUpdateWithCompositePK)
     
     val cs = from(courseSubscriptions)(p => compute(avg(p.grade)))
-   
+
+    // TODO This isn't testing what's intended. It's running a query when constructing another
+    // query and provides the (then constant) result to the outer query.
+
     val belowOrEqualToAvg = 
       from(courseSubscriptions)(p => {
         val z0: Option[Float] = from(courseSubscriptions)(p => compute(avg(p.grade)))
         where(p.grade lte z0)
-        select(p)
+        .select(p)
       }
       ).toList
       
@@ -512,7 +515,7 @@ abstract class SchoolDb2Tests extends SchemaTester with RunTestsInsideTransactio
       from(courseSubscriptions)(p => {
           val z0: Option[Float] = from(courseSubscriptions)(p => compute(avg(p.grade)))
           where(p.grade lt z0)
-          select(p)
+          .select(p)
       }
       ).toList
       

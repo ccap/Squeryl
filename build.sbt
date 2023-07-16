@@ -8,7 +8,7 @@ lazy val squeryl = Project("squeryl", file(".")).settings(
   Seq(
     description := "A Scala ORM and DSL for talking with Databases using minimum verbosity and maximum type safety",
     organization := "gov.wicourts.org.squeryl",
-    version := "0.9.6-ccap41",
+    version := "0.9.6-ccap42",
     javacOptions := Seq("-source", "1.8", "-target", "1.8"),
     /*
   	version <<= version { v => //only release *if* -Drelease=true is passed to JVM
@@ -65,7 +65,7 @@ lazy val squeryl = Project("squeryl", file(".")).settings(
 			(LsKeys.ghUser in LsKeys.lsync) := Some("max-l"),
      */
     libraryDependencies ++= Seq(
-      "cglib" % "cglib-nodep" % "2.2",
+      "net.bytebuddy" % "byte-buddy" % "1.14.5",
       "com.h2database" % "h2" % "1.2.127" % "provided",
       "mysql" % "mysql-connector-java" % "5.1.10" % "provided",
       "postgresql" % "postgresql" % "8.4-701.jdbc4" % "provided",

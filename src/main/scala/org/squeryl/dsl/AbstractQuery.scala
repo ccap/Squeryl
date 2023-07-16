@@ -235,7 +235,7 @@ abstract class AbstractQuery[R](
       val v = q.asInstanceOf[View[U]]
       val vxn = v.viewExpressionNode
       vxn.sample =
-        v.posoMetaData.createSample(FieldReferenceLinker.createCallBack(vxn))
+        v.posoMetaData.createSample(vxn)
       
       new SubQueryable(v, vxn.sample, vxn.resultSetMapper, false, vxn)
     }
