@@ -8,7 +8,7 @@ lazy val squeryl = Project("squeryl", file(".")).settings(
   Seq(
     description := "A Scala ORM and DSL for talking with Databases using minimum verbosity and maximum type safety",
     organization := "gov.wicourts.org.squeryl",
-    version := "0.9.6-ccap42",
+    version := "0.9.6-ccap43",
     javacOptions := Seq("-source", "1.8", "-target", "1.8"),
     /*
   	version <<= version { v => //only release *if* -Drelease=true is passed to JVM
@@ -28,8 +28,8 @@ lazy val squeryl = Project("squeryl", file(".")).settings(
      */
     parallelExecution := false,
     publishMavenStyle := true,
-    scalaVersion := "2.12.15",
-    crossScalaVersions := Seq("2.12.15", "2.13.0-RC1"),
+    scalaVersion := "2.12.18",
+    crossScalaVersions := Seq("2.12.18", "2.13.0-RC1"),
     licenses := Seq(
       "Apache 2" -> url(
         "http://www.apache.org/licenses/LICENSE-2.0.txt"
@@ -74,7 +74,7 @@ lazy val squeryl = Project("squeryl", file(".")).settings(
       "junit" % "junit" % "4.8.2" % "provided",
       "org.scalatest" %% "scalatest" % "3.0.3" % "test",
       "org.scala-lang" % "scala-reflect" % "2.12.2",
-      "org.scala-lang.modules" %% "scala-xml" % "1.0.5",
+      "org.scala-lang.modules" %% "scala-xml" % "2.1.0",
     )
   )
 )
